@@ -3,12 +3,13 @@ package com.intheeast.pointcutapi;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.intheeast.pointcutapi.config.AppConfig;
+import com.intheeast.pointcutapi.config.AppConfigForEnableAspectJAutoProxy;
 import com.intheeast.pointcutapi.service.AnotherService;
 import com.intheeast.pointcutapi.service.MyService;
 
 public class SpringAOPExample {
 	
-	public static void main(String[] args) {
+	public static void execAppConfig() {
 		AnnotationConfigApplicationContext context = 
 				new AnnotationConfigApplicationContext(AppConfig.class);
 
@@ -27,6 +28,36 @@ public class SpringAOPExample {
             System.out.println("Exception handled in main");
         }
 
-        context.close();    
+        context.close(); 
+	}
+	
+	public static void execAppConfigForEnableAspectJAutoProxy() {
+        AnnotationConfigApplicationContext context = 
+        		new AnnotationConfigApplicationContext(AppConfigForEnableAspectJAutoProxy.class);
+
+        // MyService 빈을 가져와서 메서드를 호출합니다.
+        MyService myService = context.getBean(MyService.class);
+        myService.myMethod();  // LoggingAdvice와 AspectJ 포인트컷이 적용됩니다.
+        
+        try {
+            myService.methodWithException();  // ExceptionHandlingAdvice가 적용됩니다.
+        } catch (Exception e) {
+            System.out.println("Exception handled in main");
+        }
+
+        // AnotherService 빈을 가져와서 메서드를 호출합니다.
+        AnotherService anotherService = context.getBean(AnotherService.class);
+        anotherService.differentMethod(123);  // CustomPointcut이 적용됩니다.
+
+        // 스프링 컨텍스트를 종료하여 리소스를 해제합니다.
+        context.close();	
+		
+	}
+
+	
+	public static void main(String[] args) {
+//		execAppConfig();
+		
+		execAppConfigForEnableAspectJAutoProxy();
     }
 }
