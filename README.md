@@ -11,4 +11,4 @@ Spring Framework 6.2.0의 [Spring AOP APIs](https://docs.spring.io/spring-framew
 - Manipulating Advised Objects
 - Using the "auto-proxy" facility
 
-[티스토리](https://sundaland.tistory.com/511)
+[티스토리](https://sundaland.tistory.com/565)
